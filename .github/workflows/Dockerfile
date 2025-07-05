@@ -1,12 +1,29 @@
-FROM python:3.9-slim
+name: Docker CI/CD
 
-WORKDIR /app
+on:
+  push:
+    branches: [main]   # Triggers when pushing to the main branch
 
-COPY requirements.txt .
-RUN pip install -r requirements.txt
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
 
-COPY . .
+    steps:
+    - name: Checkout source code
+      uses: actions/checkout@v3
 
-EXPOSE 5000
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
 
-CMD ["python", "app.py"]
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}       
+        password: ${{ secrets.DOCKER_PASSWORD }}       
+
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        push: true
+        tags: swatisambhajishinde/006020swati:latest
