@@ -26,4 +26,4 @@ jobs:
       with:
         context: .
         push: true
-        tags: E6yFmk58nuiv/testforactions:latest
+        tags: 006020swati/swatisambhajishinde:latest
